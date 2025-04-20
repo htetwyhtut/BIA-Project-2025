@@ -1,7 +1,7 @@
 dash
 pandas
-numpy
-xgboost
 joblib
+xgboost
 scikit-learn
 category_encoders
+gunicorn
