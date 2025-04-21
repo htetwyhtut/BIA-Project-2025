@@ -247,12 +247,21 @@ def recommend(n_clicks, relationship, age, partner_age, gender, partner_gender, 
     encoded[num_features] = scaler.transform(test_df[num_features])
 
     eligible['score'] = model.predict(encoded)
-    top = eligible.nlargest(3, 'score')[['name', 'interest', 'rating', 'max_cost']]
-    top.columns = ['Place Name', 'Place Type', 'Google Maps Ratings', 'Estimated Cost']
+
+    top = eligible.nlargest(3, 'score')[['name', 'interest', 'rating', 'max_cost']].copy()
+    top['Google Maps Link'] = top['name'].apply(
+        lambda name: f"https://www.google.com/maps/search/?api=1&query={name.replace(' ', '+')}"
+    )
+    top.columns = ['Place Name', 'Place Type', 'Google Maps Ratings', 'Estimated Cost', 'Google Maps Link']
 
     return dash_table.DataTable(
-        columns=[{"name": i, "id": i} for i in top.columns],
-        data=top.to_dict('records'),
+        columns=[
+            {"name": col, "id": col, "presentation": "markdown"} if "Link" in col else {"name": col, "id": col}
+            for col in top.columns
+        ],
+        data=[
+            {**row, "Google Maps Link": f"[Open in Maps]({row['Google Maps Link']})"} for row in top.to_dict('records')
+        ],
         style_table={'overflowX': 'auto'},
         style_cell={'textAlign': 'left', 'padding': '10px'},
         style_header={'backgroundColor': '#f1f1f1', 'fontWeight': 'bold'},
@@ -260,4 +269,4 @@ def recommend(n_clicks, relationship, age, partner_age, gender, partner_gender, 
     )
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run(debug=True)
