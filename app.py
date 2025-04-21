@@ -4,7 +4,13 @@ import pandas as pd
 import joblib
 from xgboost import XGBRanker
 
-app = dash.Dash(__name__)
+app = dash.Dash(
+    __name__,
+    title="AI Date Planner",
+    update_title=None,  # optional: disables the "Updating..." text
+    assets_folder="assets",
+    suppress_callback_exceptions=True
+)
 server = app.server
 
 # Load the places dataset
