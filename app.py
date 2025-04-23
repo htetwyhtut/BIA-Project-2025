@@ -14,7 +14,7 @@ app = dash.Dash(
 server = app.server
 
 # Load the places dataset
-places = pd.read_csv("training_dataset_v1.csv")
+places = pd.read_csv("training_dataset_v2.csv")
 places['interest'] = places['interest'].str.replace(' ', '_')
 places['district'] = places['district'].str.replace(' ', '_')
 places['rating'] = places['rating'].fillna(places['rating'].median())
@@ -38,7 +38,7 @@ districts = [
 ]
 interests = [
     "clubbing", "party", "cocktail_bar", "massage_spa", "yoga_studio", "live_music", "karaoke", "sky_bar",
-    "fine_dining", "rooftop_bar", "speakeasy", "jazz_bar", "hookah_lounge", "arcade", "escape_room",
+    "fine_dining", "rooftop_bar", "jazz_bar", "hookah_lounge", "arcade", "escape_room",
     "board_game_cafe", "dessert_cafe", "hidden_bar", "movie_theater", "bowling_alley", "craft_beer_bar",
     "ice_cream_shop", "themed_cafe", "hot_pot_restaurant", "live_performance_venue"
 ]
